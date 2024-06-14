@@ -1,0 +1,474 @@
+ip dhcp snooping
+ip dhcp snooping vlan 1
+!
+no spanning-tree
+!
+bridge multicast filtering
+!
+vlan database
+ vlan 2
+exit
+!
+ip igmp snooping
+ip igmp snooping vlan 1
+no ip igmp snooping vlan 1 mrouter learn pim-dvmrp
+ip igmp snooping vlan 1 mrouter interface gi1/0/1
+!
+ip arp inspection
+ip arp inspection vlan 1
+!
+errdisable recovery cause loopback-detection
+errdisable recovery cause storm-control
+!
+!
+loopback-detection enable
+loopback-detection interval 5
+loopback-detection vlan-based
+loopback-detection vlan-based recovery-time 300
+!
+pppoe intermediate-agent
+pppoe intermediate-agent format-type option user-defined %h:%p:%v
+!
+qos tail-drop profile 1
+ queue 3 limit 400
+ queue 4 limit 400
+ port-limit 400
+exit
+!
+qos trust dscp
+qos map dscp-queue 24 to 4
+qos statistics queues 1 3 all all
+qos statistics queues 2 4 all all
+mac access-list extended 11
+ deny 00:17:df:00:00:00 00:00:00:ff:ff:ff any
+ deny 00:90:1a:00:00:00 00:00:00:ff:ff:ff any
+ deny dc:38:e1:00:00:00 00:00:00:ff:ff:ff any
+ permit any any
+exit
+!
+hostname RST-NVC-2.4-TEST-SW1-MES1124
+!
+management access-list 10
+ permit ip-source 10.52.104.1
+ permit ip-source 10.11.80.99 mask 255.255.252.0
+ permit ip-source 80.254.96.84
+ permit ip-source 5.141.208.144 mask 255.255.255.240
+ permit ip-source 5.141.209.144 mask 255.255.255.240
+ permit ip-source 80.254.96.80 mask 255.255.255.248
+exit
+management access-class 10
+!
+logging host 10.11.80.240
+no logging console
+!
+aaa authentication login default line tacacs local
+aaa authentication login line tacacs local
+aaa authentication mode break
+aaa accounting commands stop-only default tacacs
+enable password level 15 ""
+username crash password encrypted 7af78c911d5b48bea1dc2449d9d89513abeb4be5 privilege 15
+tacacs-server host 10.11.80.99 encrypted key c2a4d4685fa4c25e21b2
+!
+snmp-server community encrypted ec9883125585e17613 ro view Default
+snmp-server community encrypted f39798125abefb7d7b ro view Default
+snmp-server community encrypted dc93bf2053a4d04d04819417 ro view Default
+!
+no ip http server
+!
+clock timezone MSK +3
+clock source sntp
+sntp unicast client enable
+sntp unicast client poll
+sntp server 10.11.80.108 poll
+!
+interface fastethernet 1/0/1
+ loopback-detection enable
+ switchport protected-port
+ storm-control broadcast enable
+ storm-control broadcast level kbps 64
+ storm-control multicast enable
+ storm-control multicast level kbps 200
+ storm-control broadcast logging
+ storm-control broadcast shutdown
+ service-acl input 11
+ no lldp transmit
+ pppoe intermediate-agent
+exit
+!
+interface fastethernet 1/0/2
+ loopback-detection enable
+ switchport protected-port
+ storm-control broadcast enable
+ storm-control broadcast level kbps 64
+ storm-control multicast enable
+ storm-control multicast level kbps 200
+ storm-control broadcast logging
+ storm-control broadcast shutdown
+ service-acl input 11
+ no lldp transmit
+ pppoe intermediate-agent
+exit
+!
+interface fastethernet 1/0/3
+ loopback-detection enable
+ switchport protected-port
+ storm-control broadcast enable
+ storm-control broadcast level kbps 64
+ storm-control multicast enable
+ storm-control multicast level kbps 200
+ storm-control broadcast logging
+ storm-control broadcast shutdown
+ service-acl input 11
+ no lldp transmit
+ pppoe intermediate-agent
+exit
+!
+interface fastethernet 1/0/4
+ loopback-detection enable
+ switchport protected-port
+ storm-control broadcast enable
+ storm-control broadcast level kbps 64
+ storm-control multicast enable
+ storm-control multicast level kbps 200
+ storm-control broadcast logging
+ storm-control broadcast shutdown
+ service-acl input 11
+ no lldp transmit
+ pppoe intermediate-agent
+exit
+!
+interface fastethernet 1/0/5
+ loopback-detection enable
+ switchport protected-port
+ storm-control broadcast enable
+ storm-control broadcast level kbps 64
+ storm-control multicast enable
+ storm-control multicast level kbps 200
+ storm-control broadcast logging
+ storm-control broadcast shutdown
+ service-acl input 11
+ no lldp transmit
+ pppoe intermediate-agent
+exit
+!
+interface fastethernet 1/0/6
+ loopback-detection enable
+ switchport protected-port
+ storm-control broadcast enable
+ storm-control broadcast level kbps 64
+ storm-control multicast enable
+ storm-control multicast level kbps 200
+ storm-control broadcast logging
+ storm-control broadcast shutdown
+ service-acl input 11
+ no lldp transmit
+ pppoe intermediate-agent
+exit
+!
+interface fastethernet 1/0/7
+ loopback-detection enable
+ switchport protected-port
+ storm-control broadcast enable
+ storm-control broadcast level kbps 64
+ storm-control multicast enable
+ storm-control multicast level kbps 200
+ storm-control broadcast logging
+ storm-control broadcast shutdown
+ service-acl input 11
+ no lldp transmit
+ pppoe intermediate-agent
+exit
+!
+interface fastethernet 1/0/8
+ loopback-detection enable
+ switchport protected-port
+ storm-control broadcast enable
+ storm-control broadcast level kbps 64
+ storm-control multicast enable
+ storm-control multicast level kbps 200
+ storm-control broadcast logging
+ storm-control broadcast shutdown
+ service-acl input 11
+ no lldp transmit
+ pppoe intermediate-agent
+exit
+!
+interface fastethernet 1/0/9
+ loopback-detection enable
+ switchport protected-port
+ storm-control broadcast enable
+ storm-control broadcast level kbps 64
+ storm-control multicast enable
+ storm-control multicast level kbps 200
+ storm-control broadcast logging
+ storm-control broadcast shutdown
+ service-acl input 11
+ no lldp transmit
+ pppoe intermediate-agent
+exit
+!
+interface fastethernet 1/0/10
+ loopback-detection enable
+ switchport protected-port
+ storm-control broadcast enable
+ storm-control broadcast level kbps 64
+ storm-control multicast enable
+ storm-control multicast level kbps 200
+ storm-control broadcast logging
+ storm-control broadcast shutdown
+ service-acl input 11
+ no lldp transmit
+ pppoe intermediate-agent
+ qos tail-drop profile 1
+exit
+!
+interface fastethernet 1/0/11
+ loopback-detection enable
+ switchport protected-port
+ storm-control broadcast enable
+ storm-control broadcast level kbps 64
+ storm-control multicast enable
+ storm-control multicast level kbps 200
+ storm-control broadcast logging
+ storm-control broadcast shutdown
+ service-acl input 11
+ no lldp transmit
+ pppoe intermediate-agent
+exit
+!
+interface fastethernet 1/0/12
+ loopback-detection enable
+ switchport protected-port
+ storm-control broadcast enable
+ storm-control broadcast level kbps 64
+ storm-control multicast enable
+ storm-control multicast level kbps 200
+ storm-control broadcast logging
+ storm-control broadcast shutdown
+ service-acl input 11
+ no lldp transmit
+ pppoe intermediate-agent
+exit
+!
+interface fastethernet 1/0/13
+ loopback-detection enable
+ switchport protected-port
+ storm-control broadcast enable
+ storm-control broadcast level kbps 64
+ storm-control multicast enable
+ storm-control multicast level kbps 200
+ storm-control broadcast logging
+ storm-control broadcast shutdown
+ service-acl input 11
+ no lldp transmit
+ pppoe intermediate-agent
+exit
+!
+interface fastethernet 1/0/14
+ loopback-detection enable
+ switchport protected-port
+ storm-control broadcast enable
+ storm-control broadcast level kbps 64
+ storm-control multicast enable
+ storm-control multicast level kbps 200
+ storm-control broadcast logging
+ storm-control broadcast shutdown
+ service-acl input 11
+ no lldp transmit
+ pppoe intermediate-agent
+exit
+!
+interface fastethernet 1/0/15
+ loopback-detection enable
+ switchport protected-port
+ storm-control broadcast enable
+ storm-control broadcast level kbps 64
+ storm-control multicast enable
+ storm-control multicast level kbps 200
+ storm-control broadcast logging
+ storm-control broadcast shutdown
+ service-acl input 11
+ no lldp transmit
+ pppoe intermediate-agent
+exit
+!
+interface fastethernet 1/0/16
+ loopback-detection enable
+ switchport protected-port
+ storm-control broadcast enable
+ storm-control broadcast level kbps 64
+ storm-control multicast enable
+ storm-control multicast level kbps 200
+ storm-control broadcast logging
+ storm-control broadcast shutdown
+ service-acl input 11
+ no lldp transmit
+ pppoe intermediate-agent
+exit
+!
+interface fastethernet 1/0/17
+ loopback-detection enable
+ switchport protected-port
+ storm-control broadcast enable
+ storm-control broadcast level kbps 64
+ storm-control multicast enable
+ storm-control multicast level kbps 200
+ storm-control broadcast logging
+ storm-control broadcast shutdown
+ service-acl input 11
+ no lldp transmit
+ pppoe intermediate-agent
+exit
+!
+interface fastethernet 1/0/18
+ loopback-detection enable
+ switchport protected-port
+ storm-control broadcast enable
+ storm-control broadcast level kbps 64
+ storm-control multicast enable
+ storm-control multicast level kbps 200
+ storm-control broadcast logging
+ storm-control broadcast shutdown
+ service-acl input 11
+ no lldp transmit
+ pppoe intermediate-agent
+exit
+!
+interface fastethernet 1/0/19
+ loopback-detection enable
+ switchport protected-port
+ storm-control broadcast enable
+ storm-control broadcast level kbps 64
+ storm-control multicast enable
+ storm-control multicast level kbps 200
+ storm-control broadcast logging
+ storm-control broadcast shutdown
+ service-acl input 11
+ no lldp transmit
+ pppoe intermediate-agent
+exit
+!
+interface fastethernet 1/0/20
+ loopback-detection enable
+ switchport protected-port
+ storm-control broadcast enable
+ storm-control broadcast level kbps 64
+ storm-control multicast enable
+ storm-control multicast level kbps 200
+ storm-control broadcast logging
+ storm-control broadcast shutdown
+ service-acl input 11
+ no lldp transmit
+ pppoe intermediate-agent
+exit
+!
+interface fastethernet 1/0/21
+ loopback-detection enable
+ switchport protected-port
+ storm-control broadcast enable
+ storm-control broadcast level kbps 64
+ storm-control multicast enable
+ storm-control multicast level kbps 200
+ storm-control broadcast logging
+ storm-control broadcast shutdown
+ service-acl input 11
+ no lldp transmit
+ pppoe intermediate-agent
+exit
+!
+interface fastethernet 1/0/22
+ loopback-detection enable
+ switchport protected-port
+ storm-control broadcast enable
+ storm-control broadcast level kbps 64
+ storm-control multicast enable
+ storm-control multicast level kbps 200
+ storm-control broadcast logging
+ storm-control broadcast shutdown
+ service-acl input 11
+ no lldp transmit
+ pppoe intermediate-agent
+exit
+!
+interface fastethernet 1/0/23
+ loopback-detection enable
+ switchport protected-port
+ storm-control broadcast enable
+ storm-control broadcast level kbps 64
+ storm-control multicast enable
+ storm-control multicast level kbps 200
+ storm-control broadcast logging
+ storm-control broadcast shutdown
+ service-acl input 11
+ no lldp transmit
+ pppoe intermediate-agent
+exit
+!
+interface fastethernet 1/0/24
+ loopback-detection enable
+ switchport protected-port
+ storm-control broadcast enable
+ storm-control broadcast level kbps 64
+ storm-control multicast enable
+ storm-control multicast level kbps 200
+ storm-control broadcast logging
+ storm-control broadcast shutdown
+ service-acl input 11
+ no lldp transmit
+ pppoe intermediate-agent
+exit
+!
+interface gigabitethernet 1/0/1
+ ip arp inspection trust
+ ip dhcp snooping trust
+ switchport mode trunk
+ switchport trunk allowed vlan add 2
+ description _UPLINK
+ qos trust dscp
+ lldp optional-tlv port-desc sys-name sys-desc sys-cap
+ pppoe intermediate-agent
+ pppoe intermediate-agent trust
+exit
+!
+interface gigabitethernet 1/0/2
+ loopback-detection enable
+ switchport mode trunk
+ switchport trunk allowed vlan add 2
+ switchport protected-port
+ description Downlink
+ lldp optional-tlv port-desc sys-name sys-desc sys-cap
+ pppoe intermediate-agent trust
+exit
+!
+interface gigabitethernet 1/0/3
+ loopback-detection enable
+ switchport mode trunk
+ switchport trunk allowed vlan add 2
+ switchport protected-port
+ description Downlink
+ lldp optional-tlv port-desc sys-name sys-desc sys-cap
+ pppoe intermediate-agent trust
+exit
+!
+interface gigabitethernet 1/0/4
+ loopback-detection enable
+ switchport mode trunk
+ switchport trunk allowed vlan add 2
+ switchport protected-port
+ description Downlink
+ lldp optional-tlv port-desc sys-name sys-desc sys-cap
+ pppoe intermediate-agent trust
+exit
+!
+interface vlan 2
+ ip address 10.52.104.20 255.255.255.0
+exit
+!
+ip route 5.141.208.144 255.255.255.240 10.52.104.1
+ip route 5.141.209.144 255.255.255.240 10.52.104.1
+ip route 10.11.80.0 255.255.252.0 10.52.104.1
+ip route 10.30.92.0 255.255.255.0 10.52.104.1
+ip route 80.254.96.80 255.255.255.248 10.52.104.1
+ip route 80.254.96.88 255.255.255.252 10.52.104.1
+ip route 80.254.111.0 255.255.255.0 10.52.104.1
+!
